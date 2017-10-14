@@ -2,7 +2,7 @@ ALPH_LENG = 26
 
 import telebot
 
-TOKEN = '336549983:AAHyJp9-bLRm1N8vSXfy8XUwqOE_Tdi6tTI'
+TOKEN = ''
 bot = telebot.TeleBot(TOKEN)
 
 # getMe
