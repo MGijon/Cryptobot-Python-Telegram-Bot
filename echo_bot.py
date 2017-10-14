@@ -16,6 +16,10 @@ bot = telebot.TeleBot(TOKEN)
 
 @bot.message_handler(commands = ['help'])
 def random_name(message):
+    '''
+    :param message:
+    :return: help message
+    '''
     bot.reply_to(message, 'Call 091 for a propper assistance...!')
 
 
@@ -25,7 +29,7 @@ def random_name(message):
 def send_welcome(message):
     '''
     :param message:
-    :return:
+    :return: welcome message
     '''
     bot.reply_to(message, 'Welcome to the bot :)')
 
