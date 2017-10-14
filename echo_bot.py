@@ -8,54 +8,68 @@ bot = telebot.TeleBot(TOKEN)
 # getMe
 #user = bot.get_me()
 
-OPCION = ''   # clase de encriptación que utilizaremos
-
 # ------------------------------------------------------------
-# HELP:
+# COMMANDS:
 # ------------------------------------------------------------
 
+##  HELP
 
-# recoge el comando '/help' y devuelve lo propio
 @bot.message_handler(commands = ['help'])
 def random_name(message):
     bot.reply_to(message, 'Cammon, you only need to work harder men!')
 
 
-# recoge el comando '/start' y devuelve lo propio
+## START
+
 @bot.message_handler(commands = ['start'])
 def send_welcome(message):
     bot.reply_to(message, 'Welcome, instrucciones de uso a añadir aquí')
 
 
-# ------------------------------------------------------------
-# RESPONSES:
-# ------------------------------------------------------------
+## ROT 13
 
-
-temp = True
-@bot.message_handler(fun = temp)
-def respuesta1(message):
-    temp = False
-    OPCION = message.text
-    message.text = 'You have choosen ' + OPCION
-    bot.reply_to(message, message.text)
-
-'''
-@bot.message_handler(func = lambda m : True)
-def echo_all(message):
+@bot.message_handler(commands = ['rot13'])
+def root(message):
+    message.text = message.text[len('rot13') + 1 : ]
     message.text = algorithmROT13(message.text)
     bot.reply_to(message, message.text)
-'''
 
+## CESAR ENCRYPT
+
+@bot.message_handler(commands = ['cesare'])
+def cesar(message):
+    '''
+    Cesar para encriptar. formato cesar 00 mensaje
+    :param message:
+    :return:
+    '''
+    message.text = message.text[len('cesare') + 1: ] # con esto pillo hasta
+    key =int( message.text[1:3])                        # obtengo la clave
+    message.text = message.text[3:]               # obtengo el mensaje a encyptar
+    message.text = algorithmCesar(message.text, key)
+    bot.reply_to(message, message.text)
+
+## CESAR DECRYPT
+
+@bot.message_handler(commands = ['cesard'])
+def cesar(message):
+    '''
+    Cesar para desencryptar. formato cesar 00 mensaje
+    :param message:
+    :return:
+    '''
+    message.text = message.text[len('cesard') + 1: ] # con esto pillo hasta
+    key = - int( message.text[1:3])                        # obtengo la clave
+    message.text = message.text[3:]               # obtengo el mensaje a encyptar
+    message.text = algorithmCesar(message.text, key)
+    bot.reply_to(message, message.text)
 
 
 # ------------------------------------------------------------
-# ENCYPT / DECRYPT:
+# ENCYPT / DECRYPT ALGORITHMS:
 # ------------------------------------------------------------
 
-# ROT 13
-
-
+## ROT 13
 
 def algorithmROT13(mIn):
     mOut = ''
@@ -83,21 +97,9 @@ def algorithmROT13(mIn):
     return mOut
 
 
+## CESAR
 
-# ------------------------------------------------------------
-# OTHERS:
-# ------------------------------------------------------------
-
-bot.polling(none_stop = False, interval = 0, timeout = 20)
-
-
-
-'''
-
-def algorithmCesar(mIn, key, mode):
-
-    if mode in 'decrypt d'.split():
-        key = - key
+def algorithmCesar(mIn, key):
 
     mOut = ''
     for l in mIn:
@@ -125,5 +127,12 @@ def algorithmCesar(mIn, key, mode):
     return mOut
 
 
+# ------------------------------------------------------------
+# OTHERS:
+# ------------------------------------------------------------
 
-'''
+bot.polling(none_stop = False, interval = 0, timeout = 20)
+
+
+
+
